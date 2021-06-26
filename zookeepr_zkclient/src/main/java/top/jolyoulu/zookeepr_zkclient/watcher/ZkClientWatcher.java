@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ZkClientWatcher {
     public static void main(String[] args) throws InterruptedException {
-        ZkClient zkClient = new ZkClient("192.168.100.101:2181",500,500,new SerializableSerializer());
+        ZkClient zkClient = new ZkClient("192.168.100.101:2181",500,500,new MySerializable());
         zkClient.createPersistent("/user",new User("name","123"));
         System.out.println(zkClient.readData("/user").toString());
 
