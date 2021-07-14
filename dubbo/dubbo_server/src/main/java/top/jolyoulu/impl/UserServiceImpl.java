@@ -18,6 +18,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(String id) {
         System.out.println("UserServiceImpl被调用，服务的端口号："+port);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return new User(id,"test","UserServiceImpl被调用，服务的端口号："+port);
     }
 }
