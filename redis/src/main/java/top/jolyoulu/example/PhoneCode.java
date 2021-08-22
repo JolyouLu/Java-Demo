@@ -1,4 +1,4 @@
-package top.jolyoulu;
+package top.jolyoulu.example;
 
 import redis.clients.jedis.Jedis;
 
