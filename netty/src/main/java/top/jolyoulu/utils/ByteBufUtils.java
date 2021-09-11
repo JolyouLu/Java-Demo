@@ -14,6 +14,28 @@ import static io.netty.util.internal.StringUtil.NEWLINE;
 public class ByteBufUtils {
 
     /**
+     * 分配ByteBuf
+     * @param min 初始化大小
+     * @param max 最大大小
+     */
+    public static ByteBuf allocator(Integer min,Integer max){
+        //创建ByteBuf(自动扩容)
+        ByteBuf buffer = null;
+        if (max != null && max > min)
+            buffer = ByteBufAllocator.DEFAULT.buffer(min,max);
+        else
+            buffer = ByteBufAllocator.DEFAULT.buffer(min);
+
+        //如果不是覆写整个byteBuf那么最好初始化一下
+        for (int i = 0; i < buffer.readableBytes(); i++) {
+            buffer.writeByte(0x00);
+        }
+        buffer.resetWriterIndex();
+        printHex(buffer);
+        return buffer;
+    }
+
+    /**
      * 对ByteBuf进行扩容
      * @param buf 需扩容的ByteBuf
      * @param size 需扩容多大的size

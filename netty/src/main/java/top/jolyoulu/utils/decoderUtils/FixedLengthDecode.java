@@ -1,4 +1,4 @@
-package top.jolyoulu.CustomDecoder;
+package top.jolyoulu.utils.decoderUtils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;

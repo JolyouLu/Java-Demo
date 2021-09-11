@@ -1,4 +1,4 @@
-package top.jolyoulu.websocket;
+package top.jolyoulu.demo.websocket;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,4 +1,4 @@
-package top.jolyoulu.CustomDecoder;
+package top.jolyoulu.utils.decoderUtils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -6,7 +6,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import top.jolyoulu.utils.HexUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
