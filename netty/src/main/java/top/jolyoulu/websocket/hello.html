@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form onsubmit="return false">
+    <textarea id="message" style="height: 300px;width: 300px"></textarea>
+    <input type="file" accept="image/*"
+           name="uploader-input"
+           class="uploader-file"
+           id="image_upload">
+    <input id="tempName" type="hidden">
+    <input type="button" value="上传图片" onclick="send(this.form.tempName.value)">
+    <input type="button" value="消息发送" onclick="send(this.form.message.value)">
+    <textarea id="responseText" style="height: 300px;width: 300px"></textarea>
+    <input type="button" value="清空内容" onclick="document.getElementById('responseText').value=''">
+</form>
+</body>
+<script>
+    var socket;
+    //判断当前是否支持浏览器websocket
+    if (window.WebSocket) {
+        socket = new WebSocket("ws://localhost:9999/hello")
+        //相当于channelReado，ev 收到服务器端回送的消息
+        socket.onmessage = function (ev) {
+            console.log(ev.data)
+            let rt = document.getElementById('responseText')
+            rt.value = rt.value + "\n" + ev.data;
+        }
+        //连接开启执行的方法
+        socket.onopen = function (ev) {
+            let rt = document.getElementById('responseText')
+            rt.value = "连接开启了...";
+        }
+        //连接关闭执行的方法
+        socket.onclose = function (ev) {
+            let rt = document.getElementById('responseText')
+            rt.value = rt.value + "\n" + "连接关闭了...";
+        }
+    } else {
+        alert("当前浏览器不支持websocket")
+    }
+
+    //发送消息到服务器
+    function send(message) {
+        if (!window.socket) { //判断socket是否创建好
+            return;
+        }
+        if (socket.readyState == WebSocket.OPEN) {
+            //通过Socket发送消息
+            socket.send(message);
+        } else {
+            alert("连接没有开启");
+        }
+    }
+
+    var fileInput = document.getElementById("image_upload");
+    //选择文件
+    fileInput.addEventListener('change', function () {
+        //如果未传入文件则中断
+        if (fileInput.files[0] == undefined) {
+            return;
+        }
+        //获取第一个文件
+        var file = fileInput.files[0];
+        //FileReader可直接将上传文件转化为二进制流
+        var reader = new FileReader();
+        //转化二进制流，异步方法
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            //完成后this.result为二进制流，保存下来等一下发送发这个到后端
+            console.log(this.result);
+
+            var base64Str = this.result;
+            // var startNum = base64Str.indexOf("base64,");
+            // startNum = startNum * 1 + 7;
+            //去除前部格式信息（如果有需求）
+            // var baseStr = base64Str.slice(startNum);
+            var baseStr = base64Str;
+
+            //临时存储二进制流
+            $("#tempName").val(baseStr);
+
+        }
+    })
+</script>
+</html>
