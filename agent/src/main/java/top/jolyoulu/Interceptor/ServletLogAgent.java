@@ -80,7 +80,7 @@ public class ServletLogAgent {
         String traceId = UUID.randomUUID().toString().replaceAll("-","");
         TraceSession session = new TraceSession(traceId, "0");
         trace.setTraceId(traceId);
-        trace.setEventId(session.getParentId()+"."+session.getCurrentEventId());
+        trace.setEventId(session.getParentId()+"."+session.getNextCurrentEventId());
 
         return trace;
     }

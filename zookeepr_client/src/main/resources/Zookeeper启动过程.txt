@@ -1,0 +1,12 @@
+Zookeeper服务启动过程
+org.apache.zookeeper.server.quorum.QuorumPeerMain.initializeAndRun 初始化
+org.apache.zookeeper.server.quorum.QuorumPeerConfig.parseProperties 加载配置文件
+org.apache.zookeeper.server.quorum.QuorumPeerMain.runFromConfig 集群启动
+org.apache.zookeeper.server.ServerCnxnFactory.createFactory() 初始化网络
+org.apache.zookeeper.server.quorum.QuorumPeer.start 启动 1、数据准备 2、网络加载 3、选举
+    org.apache.zookeeper.server.quorum.QuorumPeer.loadDataBase 1、数据准备
+    org.apache.zookeeper.server.NIOServerCnxnFactory.start 2、网络加载
+    org.apache.zookeeper.server.quorum.QuorumPeer.startLeaderElection 3、选举
+
+Zookeeper客户端启动过程
+

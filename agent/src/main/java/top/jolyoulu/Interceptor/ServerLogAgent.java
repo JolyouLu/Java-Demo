@@ -112,7 +112,7 @@ public class ServerLogAgent {
     public static void end(Object param){
         TraceInfo traceInfo = (TraceInfo) param;
         System.out.println("执行时间："+(System.currentTimeMillis() - traceInfo.getBegin()));
-        System.out.println("执行参数："+ Arrays.toString(traceInfo.getArgs()));
+        System.out.println(traceInfo);
     }
 
     //用于记录一个方法的开始时间与参数参数的类
