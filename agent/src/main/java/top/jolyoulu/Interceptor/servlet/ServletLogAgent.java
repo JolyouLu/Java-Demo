@@ -1,7 +1,7 @@
-package top.jolyoulu.Interceptor;
+package top.jolyoulu.Interceptor.servlet;
 
 import javassist.*;
-import javassist.bytecode.AccessFlag;
+import top.jolyoulu.Interceptor.bean.TraceSession;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public class ServletLogAgent {
 
     //拦截javax.servlet.http.HttpServlet.service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
     public static void premain(String arg, Instrumentation instrumentation){
-        System.out.println("拦截servlet");
+        System.out.println("servlet 拦截");
         instrumentation.addTransformer(new ClassFileTransformer() {
             @Override
             public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
@@ -51,11 +51,11 @@ public class ServletLogAgent {
             //修改原方法名称
             method.setName(method.getName()+"$agent");
             copyMethod.setBody("{\n" +
-                    "                    Object trace = top.jolyoulu.Interceptor.ServletLogAgent.begin($args);\n" +
+                    "                    Object trace = top.jolyoulu.Interceptor.servlet.ServletLogAgent.begin($args);\n" +
                     "                    try {\n" +
                     "                        "+copyMethod.getName()+"$agent($$);\n" +
                     "                    }finally {\n" +
-                    "                        top.jolyoulu.Interceptor.ServletLogAgent.end(trace);\n" +
+                    "                        top.jolyoulu.Interceptor.servlet.ServletLogAgent.end(trace);\n" +
                     "                    }\n" +
                     "                }");
             ctClass.addMethod(copyMethod);

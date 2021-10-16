@@ -1,4 +1,4 @@
-package top.jolyoulu.Interceptor;
+package top.jolyoulu.Interceptor.bean;
 
 /**
  * @Author: JolyouLu

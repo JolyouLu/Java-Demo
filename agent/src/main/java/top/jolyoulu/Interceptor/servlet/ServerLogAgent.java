@@ -1,7 +1,8 @@
-package top.jolyoulu.Interceptor;
+package top.jolyoulu.Interceptor.servlet;
 
 import javassist.*;
 import javassist.bytecode.AccessFlag;
+import top.jolyoulu.Interceptor.bean.TraceSession;
 import top.jolyoulu.utils.WildcardMatcher;
 
 import java.io.IOException;
@@ -10,7 +11,6 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
 import java.util.Arrays;
-import java.util.Queue;
 
 /**
  * @Author: JolyouLu
@@ -24,6 +24,7 @@ public class ServerLogAgent {
         System.out.println("server 拦截");
         //确定采集目标
         //通配符 xxx.xxx.server.*Server
+        args = args == null || args.trim().equals("") ? "top.jolyoulu.service.*Server" : args;
         WildcardMatcher matcher = new WildcardMatcher(args);
         instrumentation.addTransformer(new ClassFileTransformer() {
             @Override
@@ -31,15 +32,15 @@ public class ServerLogAgent {
                                     Class<?> classBeingRedefined,
                                     ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
                 //如果className或者loader为空，按默认的转载
-                if (className == null || loader == null){
+                if (className == null || loader == null) {
                     return null;
                 }
                 //如果不匹配正则表达式的类不处理
-                if (!matcher.matches(className.replaceAll("/","."))) {
+                if (!matcher.matches(className.replaceAll("/", "."))) {
                     return null;
                 }
                 //匹配的做字节码插桩
-                return buildMonitorBytes(loader,className.replace("/","."));
+                return buildMonitorBytes(loader, className.replace("/", "."));
             }
         });
     }
@@ -54,7 +55,7 @@ public class ServerLogAgent {
             //获取该类所有方法，遍历
             for (CtMethod method : ctClass.getDeclaredMethods()) {
                 //过滤非静态，非抽象，非本地(native)方法
-                if (!AccessFlag.isPublic(method.getModifiers())){
+                if (!AccessFlag.isPublic(method.getModifiers())) {
                     continue;
                 }
                 if ((method.getModifiers() & AccessFlag.ABSTRACT) != 0) {
@@ -69,23 +70,25 @@ public class ServerLogAgent {
                 //复制原方法名称
                 CtMethod copyMethod = CtNewMethod.copy(method, ctClass, new ClassMap());
                 //修改原方法名称
-                method.setName(method.getName()+"$agent");
+                method.setName(method.getName() + "$agent");
+                // 原方法 改为私有方法 否则在dubbo进行二次转换出现异常
+                method.setModifiers(AccessFlag.setPrivate(method.getModifiers()));
                 if (copyMethod.getReturnType().getName().equals("void")) {
                     copyMethod.setBody("{\n" +
-                            "                    Object traceInfo = top.jolyoulu.Interceptor.ServerLogAgent.begin($args);\n" +
+                            "                    Object traceInfo = top.jolyoulu.Interceptor.servlet.ServerLogAgent.begin($args);\n" +
                             "                    try {\n" +
-                            "                        "+copyMethod.getName()+"$agent($$);\n" +
+                            "                        " + copyMethod.getName() + "$agent($$);\n" +
                             "                    }finally {\n" +
-                            "                        top.jolyoulu.Interceptor.ServerLogAgent.end(traceInfo);\n" +
+                            "                        top.jolyoulu.Interceptor.servlet.ServerLogAgent.end(traceInfo);\n" +
                             "                    }\n" +
                             "                }");
-                }else {
+                } else {
                     copyMethod.setBody("{\n" +
-                            "                    Object traceInfo = top.jolyoulu.Interceptor.ServerLogAgent.begin($args);\n" +
+                            "                    Object traceInfo = top.jolyoulu.Interceptor.servlet.ServerLogAgent.begin($args);\n" +
                             "                    try {\n" +
-                            "                        return "+copyMethod.getName()+"$agent($$);\n" +
+                            "                        return " + copyMethod.getName() + "$agent($$);\n" +
                             "                    }finally {\n" +
-                            "                        top.jolyoulu.Interceptor.ServerLogAgent.end(traceInfo);\n" +
+                            "                        top.jolyoulu.Interceptor.servlet.ServerLogAgent.end(traceInfo);\n" +
                             "                    }\n" +
                             "                }");
                 }
@@ -99,24 +102,24 @@ public class ServerLogAgent {
     }
 
     //方法开始前调用
-    public static TraceInfo begin(Object[] args){
+    public static TraceInfo begin(Object[] args) {
         TraceInfo t = new TraceInfo(System.currentTimeMillis(), args);
-        if (TraceSession.getCurrentSession() != null){
+        if (TraceSession.getCurrentSession() != null) {
             t.setTraceId(TraceSession.getCurrentSession().getTraceId());
-            t.setEventId(TraceSession.getCurrentSession().getParentId()+"."+TraceSession.getCurrentSession().getNextCurrentEventId());
+            t.setEventId(TraceSession.getCurrentSession().getParentId() + "." + TraceSession.getCurrentSession().getNextCurrentEventId());
         }
         return t;
     }
 
     //方法结束后调用
-    public static void end(Object param){
+    public static void end(Object param) {
         TraceInfo traceInfo = (TraceInfo) param;
-        System.out.println("执行时间："+(System.currentTimeMillis() - traceInfo.getBegin()));
+        System.out.println("执行时间：" + (System.currentTimeMillis() - traceInfo.getBegin()));
         System.out.println(traceInfo);
     }
 
     //用于记录一个方法的开始时间与参数参数的类
-    public static class TraceInfo{
+    public static class TraceInfo {
         private String traceId;
         private String eventId;
         long begin;
