@@ -18,10 +18,10 @@ import java.util.Arrays;
  * @Version 1.0
  * 使用Agent实现无代码侵入性的日志记录
  */
-public class ServerLogAgent {
+public class ServerAgent {
 
     public static void premain(String args, Instrumentation instrumentation) {
-        System.out.println("server 拦截");
+        System.out.println("server-拦截器");
         //确定采集目标
         //通配符 xxx.xxx.server.*Server
         args = args == null || args.trim().equals("") ? "top.jolyoulu.service.*Server" : args;
@@ -75,20 +75,20 @@ public class ServerLogAgent {
                 method.setModifiers(AccessFlag.setPrivate(method.getModifiers()));
                 if (copyMethod.getReturnType().getName().equals("void")) {
                     copyMethod.setBody("{\n" +
-                            "                    Object traceInfo = top.jolyoulu.Interceptor.servlet.ServerLogAgent.begin($args);\n" +
+                            "                    Object traceInfo = top.jolyoulu.Interceptor.servlet.ServerAgent.begin($args);\n" +
                             "                    try {\n" +
                             "                        " + copyMethod.getName() + "$agent($$);\n" +
                             "                    }finally {\n" +
-                            "                        top.jolyoulu.Interceptor.servlet.ServerLogAgent.end(traceInfo);\n" +
+                            "                        top.jolyoulu.Interceptor.servlet.ServerAgent.end(traceInfo);\n" +
                             "                    }\n" +
                             "                }");
                 } else {
                     copyMethod.setBody("{\n" +
-                            "                    Object traceInfo = top.jolyoulu.Interceptor.servlet.ServerLogAgent.begin($args);\n" +
+                            "                    Object traceInfo = top.jolyoulu.Interceptor.servlet.ServerAgent.begin($args);\n" +
                             "                    try {\n" +
                             "                        return " + copyMethod.getName() + "$agent($$);\n" +
                             "                    }finally {\n" +
-                            "                        top.jolyoulu.Interceptor.servlet.ServerLogAgent.end(traceInfo);\n" +
+                            "                        top.jolyoulu.Interceptor.servlet.ServerAgent.end(traceInfo);\n" +
                             "                    }\n" +
                             "                }");
                 }

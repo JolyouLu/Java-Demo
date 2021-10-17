@@ -20,7 +20,7 @@ import java.util.Map;
 public class DubboConsumerAgent {
 
     public static void premain(String args, Instrumentation instrumentation) {
-        System.out.println("dubbo 拦截");
+        System.out.println("dubbo-consumer-拦截器");
         instrumentation.addTransformer(new ClassFileTransformer() {
             @Override
             public byte[] transform(ClassLoader loader, String className,
@@ -79,6 +79,9 @@ public class DubboConsumerAgent {
         if (session != null) {
             dubboInfo.traceId = session.getTraceId();
             dubboInfo.eventId = session.getParentId() + "." + session.getNextCurrentEventId();
+            //使用隐式传参，将当前traceId与eventId，随着dubbo协议传递到provider中
+            invocation.setAttachment("_traceId",dubboInfo.traceId);
+            invocation.setAttachment("_parentId",dubboInfo.eventId);
         }
         return dubboInfo;
     }

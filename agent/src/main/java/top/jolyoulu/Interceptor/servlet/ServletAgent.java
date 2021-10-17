@@ -21,11 +21,11 @@ import java.util.UUID;
  * @Version 1.0
  * 使用Agent实现Servlet入口拦截
  */
-public class ServletLogAgent {
+public class ServletAgent {
 
     //拦截javax.servlet.http.HttpServlet.service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
     public static void premain(String arg, Instrumentation instrumentation){
-        System.out.println("servlet 拦截");
+        System.out.println("servlet-拦截器");
         instrumentation.addTransformer(new ClassFileTransformer() {
             @Override
             public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
@@ -51,11 +51,11 @@ public class ServletLogAgent {
             //修改原方法名称
             method.setName(method.getName()+"$agent");
             copyMethod.setBody("{\n" +
-                    "                    Object trace = top.jolyoulu.Interceptor.servlet.ServletLogAgent.begin($args);\n" +
+                    "                    Object trace = top.jolyoulu.Interceptor.servlet.ServletAgent.begin($args);\n" +
                     "                    try {\n" +
                     "                        "+copyMethod.getName()+"$agent($$);\n" +
                     "                    }finally {\n" +
-                    "                        top.jolyoulu.Interceptor.servlet.ServletLogAgent.end(trace);\n" +
+                    "                        top.jolyoulu.Interceptor.servlet.ServletAgent.end(trace);\n" +
                     "                    }\n" +
                     "                }");
             ctClass.addMethod(copyMethod);
