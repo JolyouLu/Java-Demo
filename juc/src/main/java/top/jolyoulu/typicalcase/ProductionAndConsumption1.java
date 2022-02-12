@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
  * @Author: JolyouLu
  * @Date: 2021/8/31 10:00
  * @Version 1.0
- * 生产者与消费者的实例demo
+ * 生产者消费者的实例demo
  */
 public class ProductionAndConsumption1 {
     //咖啡厅
