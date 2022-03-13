@@ -145,7 +145,7 @@ public class BiasedTest {
         },"t2");
         t3.start();
         t3.join();
-        //新创建的对象也不会有偏向锁了
+        //新创建的第40个对象也不会有偏向锁了
         log.debug("main \t"+ClassLayout.parseInstance(new MyLock()).toPrintable());
     }
 }
