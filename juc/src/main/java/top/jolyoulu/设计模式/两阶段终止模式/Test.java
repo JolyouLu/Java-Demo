@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
  * @Author: JolyouLu
  * @Date: 2022/3/6 0:31
  * @Version 1.0
+ * 一个循环的监控线程例子,利用sleep控制线程的循环间隔
  */
 @Slf4j(topic = "Test")
 public class Test {
