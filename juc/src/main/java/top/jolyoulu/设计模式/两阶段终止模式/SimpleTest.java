@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * 一个循环的监控线程例子,利用sleep控制线程的循环间隔
  */
 @Slf4j(topic = "Test")
-public class Test {
+public class SimpleTest {
     public static void main(String[] args) throws InterruptedException {
         TwoPhaseTermination tpt = new TwoPhaseTermination();
         tpt.start();
