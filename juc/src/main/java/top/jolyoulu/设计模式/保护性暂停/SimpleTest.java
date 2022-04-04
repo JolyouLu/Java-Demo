@@ -54,6 +54,31 @@ class GuardedObject<T> {
         }
     }
 
+    //获取结果，带超时
+    public T get(long timeout){
+        synchronized (this){
+            long begin = System.currentTimeMillis(); //记录开始时间
+            long passedTime = 0; //经历的时间
+
+            //还没有结果
+            while (response == null){
+                //判断是否已经超时
+                if (passedTime >= timeout){
+                    break;
+                }
+                try {
+                    //计算需要wait多久时间，timeout减上一次经历的时间
+                    this.wait(timeout - passedTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //记录这次wait共记录多久
+                passedTime = System.currentTimeMillis() - begin;
+            }
+            return response;
+        }
+    }
+
     //产生结果
     public void complete(T response){
         synchronized (this){
