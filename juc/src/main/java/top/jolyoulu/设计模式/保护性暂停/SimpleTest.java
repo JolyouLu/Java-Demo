@@ -10,9 +10,10 @@ import java.util.List;
  * @Author: JolyouLu
  * @Date: 2022/4/4 15:23
  * @Version 1.0
+ * 保护性暂停-简单案例
  */
 @Slf4j
-public class Test{
+public class SimpleTest{
     public static void main(String[] args) {
         GuardedObject<List<String>> guardedObject = new GuardedObject<>();
 
