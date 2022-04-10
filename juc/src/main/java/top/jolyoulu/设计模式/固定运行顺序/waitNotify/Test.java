@@ -1,4 +1,4 @@
-package top.jolyoulu.设计模式.固定运行顺序.waitNotify方式示例;
+package top.jolyoulu.设计模式.固定运行顺序.waitNotify;
 
 import lombok.extern.slf4j.Slf4j;
 
