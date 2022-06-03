@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j(topic = "TwoPhaseTermination")
 public class TwoPhaseTermination {
     private Thread monitor;
+    //停止标记
     private volatile boolean stop = false;
 
     //启动监控线程
