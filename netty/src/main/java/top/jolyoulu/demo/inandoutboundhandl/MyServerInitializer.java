@@ -18,6 +18,7 @@ public class MyServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new MyLongToByteEncoder());
         pipeline.addLast(new MyByteToLongDecoder());
         pipeline.addLast(new MyServerHandler());
+        pipeline.addLast(new MyServerHandler2());
     }
 
 }
