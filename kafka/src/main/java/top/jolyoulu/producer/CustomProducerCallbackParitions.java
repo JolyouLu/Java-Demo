@@ -26,7 +26,7 @@ public class CustomProducerCallbackParitions {
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(properties);
         //同步发送数据
         for (int i = 0; i < 5; i++) {
-            kafkaProducer.send(new ProducerRecord<>("first",2,"", "hello" + i), (metadata, exception) -> {
+            kafkaProducer.send(new ProducerRecord<>("first",0,"", "hello" + i), (metadata, exception) -> {
                 if (exception == null){
                     System.out.println("主题："+metadata.topic()+" 分区："+metadata.partition());
                 }

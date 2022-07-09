@@ -12,7 +12,7 @@ import java.util.Properties;
  * 异步消息带回调
  */
 public class CustomProducerCallback {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //配置
         Properties properties = new Properties();
         //设置 bootstrap.servers 连接kafaka地址
@@ -23,12 +23,13 @@ public class CustomProducerCallback {
         //创建一个kafka对象
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(properties);
         //同步发送数据
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 500; i++) {
             kafkaProducer.send(new ProducerRecord<>("first", "hello" + i), (metadata, exception) -> {
                 if (exception == null){
                     System.out.println("主题："+metadata.topic()+" 分区："+metadata.partition());
                 }
             });
+            Thread.sleep(1);
         }
         //关闭资源
         kafkaProducer.close();
