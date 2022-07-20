@@ -1,5 +1,7 @@
 package top.jolyoulu.aqs;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 import java.util.concurrent.locks.Condition;
@@ -10,7 +12,43 @@ import java.util.concurrent.locks.Lock;
  * @Date: 2022/7/17 17:56
  * @Version 1.0
  */
-public class MyAqsLock implements Lock{
+@Slf4j
+public class TestAqs{
+    //测试代码
+    public static void main(String[] args) {
+        MyLock lock = new MyLock();
+        new Thread(() -> {
+            lock.lock();
+            try {
+                log.debug("locking...");
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }finally {
+                log.debug("unlock...");
+                lock.unlock();
+            }
+        },"t1").start();
+
+        new Thread(() -> {
+            lock.lock();
+            try {
+                log.debug("locking...");
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }finally {
+                log.debug("unlock...");
+                lock.unlock();
+            }
+        },"t2").start();
+    }
+}
+class MyLock implements Lock{
 
     private MySync sync = new MySync();
 
@@ -56,6 +94,7 @@ public class MyAqsLock implements Lock{
             if (compareAndSetState(0,1)){
                 //加锁成功后将当前线程setExclusiveOwnerThread中
                 setExclusiveOwnerThread(Thread.currentThread());
+                return true;
             }
             return false; //否则返回false
         }
