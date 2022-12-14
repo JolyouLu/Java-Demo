@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class ExportAllKeys {
     private static final Map<String, AtomicInteger> outMap = new ConcurrentHashMap<>();
 
-    private static volatile String coursor = ScanParams.SCAN_POINTER_START;
+    private static String coursor = ScanParams.SCAN_POINTER_START;
 
     private static final Jedis jedis = new Jedis(new HostAndPort("120.77.156.109",6381),
             DefaultJedisClientConfig.builder().password("IUF3nnq9jbz").build());
