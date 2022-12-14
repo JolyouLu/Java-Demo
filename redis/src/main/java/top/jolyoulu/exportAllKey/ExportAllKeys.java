@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
  * 导出redis中的所有key
  */
 public class ExportAllKeys {
-    private static ExecutorService executorService = Executors.newFixedThreadPool(8);
     private static final Map<String, AtomicInteger> outMap = new ConcurrentHashMap<>();
 
     private static volatile String coursor = ScanParams.SCAN_POINTER_START;
