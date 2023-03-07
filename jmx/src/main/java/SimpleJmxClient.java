@@ -31,8 +31,15 @@ public class SimpleJmxClient {
                 System.out.println(domain);
             }
             System.out.println("==========MBean: com.sun.management============");
-            String beanMName = "JL:type=customer";
-            Object invoke = msc.invoke(ObjectName.getInstance(beanMName), "say", null, null);
+            ObjectName objectName = ObjectName.getInstance("JL:type=customer");
+            MBeanInfo mBeanInfo = msc.getMBeanInfo(objectName);
+            System.out.println("可操作的方法：");
+            for (MBeanOperationInfo operation : mBeanInfo.getOperations()) {
+                System.out.println(operation);
+            }
+            ObjectInstance mscObjectInstance = msc.getObjectInstance(objectName);
+            System.out.println(mscObjectInstance);
+            Object invoke = msc.invoke(objectName, "say", null, null);
             System.out.println(invoke);
         } catch (Exception e) {
             throw new RuntimeException(e);
