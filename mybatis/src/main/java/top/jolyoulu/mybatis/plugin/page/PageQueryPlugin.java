@@ -7,6 +7,7 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
+import top.jolyoulu.mybatis.plugin.AbstractPlugin;
 import top.jolyoulu.mybatis.utils.MybatisPluginUtil;
 import top.jolyoulu.mybatis.utils.StatementHandlerMetaObject;
 
@@ -25,15 +26,14 @@ import java.util.Optional;
         @Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})
 })
 @Slf4j
-public class PageQueryPlugin implements Interceptor {
-    //是否是debug模式
-    private boolean debug = false;
+public class PageQueryPlugin extends AbstractPlugin implements Interceptor {
 
     public PageQueryPlugin() {
+        super();
     }
 
     public PageQueryPlugin(boolean debug) {
-        this.debug = debug;
+        super(debug);
     }
 
     @Override
@@ -125,11 +125,5 @@ public class PageQueryPlugin implements Interceptor {
             return (JlPage) page;
         }
         return null;
-    }
-
-    private void log(String msg,Object... arg){
-        if (debug){
-            log.debug(msg,arg);
-        }
     }
 }

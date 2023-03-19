@@ -1,4 +1,4 @@
-package top.jolyoulu.entity;
+package top.jolyoulu.mybatis.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

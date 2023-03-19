@@ -35,7 +35,7 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
             <!--编译时使用，打包过滤-->
-<!--            <scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

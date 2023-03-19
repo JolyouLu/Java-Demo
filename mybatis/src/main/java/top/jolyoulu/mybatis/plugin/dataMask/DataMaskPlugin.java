@@ -7,6 +7,7 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
+import top.jolyoulu.mybatis.plugin.AbstractPlugin;
 
 import java.lang.reflect.Field;
 import java.sql.Statement;
@@ -22,7 +23,15 @@ import java.util.stream.Stream;
 @Intercepts(
         @Signature(type = ResultSetHandler.class, method = "handleResultSets", args = Statement.class)
 )
-public class DataMaskPlugin implements Interceptor {
+public class DataMaskPlugin extends AbstractPlugin implements Interceptor {
+
+    public DataMaskPlugin() {
+        super();
+    }
+
+    public DataMaskPlugin(boolean debug) {
+        super(debug);
+    }
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
