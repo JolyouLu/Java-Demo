@@ -12,10 +12,18 @@ public class StatementHandlerMetaObject {
 
     private final MetaObject metaObject;
 
+    /**
+     * 转换为Mybatis的反射工具类
+     * @param statementHandler
+     */
     public StatementHandlerMetaObject(StatementHandler statementHandler) {
         this.metaObject = SystemMetaObject.forObject(statementHandler);
     }
 
+    /**
+     * 获取StatementHandler中的MappedStatement
+     * @return
+     */
     public MappedStatement getMappedStatement() {
         if (isProxy()){
             return (MappedStatement) metaObject.getValue("h.target.delegate.mappedStatement");
@@ -24,6 +32,10 @@ public class StatementHandlerMetaObject {
         }
     }
 
+    /**
+     * 获取StatementHandler中的ParameterHandler
+     * @return
+     */
     public ParameterHandler getParameterHandler() {
         if (isProxy()){
             return (ParameterHandler) metaObject.getValue("h.target.delegate.parameterHandler");
@@ -32,6 +44,10 @@ public class StatementHandlerMetaObject {
         }
     }
 
+    /**
+     * 获取StatementHandler中的BoundSql
+     * @return
+     */
     public void setBoundSql(String sql) {
         if (isProxy()){
             metaObject.setValue("h.target.delegate.boundSql.sql",sql);
