@@ -10,25 +10,26 @@
     <packaging>pom</packaging>
 
     <modules>
-<!--        <module>agent</module>-->
-<!--        <module>atomikos</module>-->
-<!--        <module>awt</module>-->
-<!--        <module>dubbo</module>-->
-<!--        <module>elasticsearch</module>-->
-<!--        <module>encrypt_decrypt</module>-->
-<!--        <module>hadoop</module>-->
+        <module>agent</module>
+        <module>atomikos</module>
+        <module>awt</module>
+        <module>dubbo</module>
+        <module>elasticsearch</module>
+        <module>encrypt_decrypt</module>
+        <module>hadoop</module>
         <module>jmx</module>
-<!--        <module>juc</module>-->
-<!--        <module>netty</module>-->
-<!--        <module>rabbitmq</module>-->
-<!--        <module>redis</module>-->
-<!--        <module>rocketmq</module>-->
-<!--        <module>servlet</module>-->
-<!--        <module>shiro</module>-->
-<!--        <module>swing</module>-->
-<!--        <module>zookeepr_client</module>-->
-<!--        <module>zookeepr_curator</module>-->
-<!--        <module>zookeepr_zkclient</module>-->
+        <module>mybatis</module>
+        <module>juc</module>
+        <module>netty</module>
+        <module>rabbitmq</module>
+        <module>redis</module>
+        <module>rocketmq</module>
+        <module>servlet</module>
+        <module>shiro</module>
+        <module>swing</module>
+        <module>zookeepr_client</module>
+        <module>zookeepr_curator</module>
+        <module>zookeepr_zkclient</module>
     </modules>
 
 </project>
