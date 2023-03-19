@@ -1,18 +1,16 @@
 package top.jolyoulu.mybatis;
 
 
-import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.logging.nologging.NoLoggingImpl;
 import org.apache.ibatis.session.*;
 import top.jolyoulu.mybatis.entity.SysUser;
 import top.jolyoulu.mybatis.mapper.SysUserMapper;
-import top.jolyoulu.mybatis.plugin.dataMask.DataMaskPlugin;
 import top.jolyoulu.mybatis.plugin.page.JlPage;
-import top.jolyoulu.mybatis.plugin.page.PageBO;
+import top.jolyoulu.mybatis.plugin.page.JlPageLocal;
 import top.jolyoulu.mybatis.plugin.page.PageQueryPlugin;
-import top.jolyoulu.mybatis.plugin.sqllog.SqlLogPlugin;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,10 +35,12 @@ public class MybatisTest {
         //获取Mapper对象
         SysUserMapper userMapper = session.getMapper(SysUserMapper.class);
         //调用Mapper接口对象方法操作数据库
-        JlPage<SysUser> page = JlPage.getPage(SysUser.class, 1L, 10L);
-        List<SysUser> list = userMapper.listById(page,"2b07e91a097349d3208d77a1");
-        page.setList(list);
-        System.out.println(page);
-        System.out.println(list);
+        JlPage<SysUser> execute = JlPage.execute(
+                SysUser.class, 1, 10,
+                () -> {
+                    List<SysUser> list = userMapper.listById("2b07e91a097349d3208d77a1");
+                    return list;
+                },true);
+        System.out.println(execute);
     }
 }

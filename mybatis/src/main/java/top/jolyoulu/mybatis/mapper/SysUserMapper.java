@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface SysUserMapper {
 
-    List<SysUser> list(@Param("page") JlPage pageInfo);
+    List<SysUser> list();
 
-    List<SysUser> listById(@Param("page") JlPage pageInfo, @Param("id") String id);
+    List<SysUser> listById(@Param("id") String id);
 }
