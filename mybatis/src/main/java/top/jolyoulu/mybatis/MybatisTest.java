@@ -8,6 +8,7 @@ import top.jolyoulu.mybatis.mapper.SysUserMapper;
 import top.jolyoulu.mybatis.plugin.page.JlPage;
 import top.jolyoulu.mybatis.plugin.page.JlPageLocal;
 import top.jolyoulu.mybatis.plugin.page.PageQueryPlugin;
+import top.jolyoulu.mybatis.plugin.sqllog.SqlLogPlugin;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class MybatisTest {
         //添加自定义插件
         Configuration configuration = sqlSessionFactory.getConfiguration();
 //        configuration.addInterceptor(new DataMaskPlugin());
-        configuration.addInterceptor(new PageQueryPlugin(true));
-//        configuration.addInterceptor(new SqlLogPlugin());
+        configuration.addInterceptor(new PageQueryPlugin());
+        configuration.addInterceptor(new SqlLogPlugin());
         configuration.setLogImpl(NoLoggingImpl.class);
         //打开session
         SqlSession session = sqlSessionFactory.openSession();

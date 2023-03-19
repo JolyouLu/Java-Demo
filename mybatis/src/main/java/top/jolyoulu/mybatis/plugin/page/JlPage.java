@@ -1,8 +1,5 @@
 package top.jolyoulu.mybatis.plugin.page;
 
-import lombok.Data;
-import top.jolyoulu.mybatis.entity.SysUser;
-
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -11,7 +8,6 @@ import java.util.function.Supplier;
  * @Date: 2023/3/19 14:31
  * @Description
  */
-@Data
 public class JlPage<T> {
     private Long page;
     private Long pageSize;
@@ -40,7 +36,7 @@ public class JlPage<T> {
                                         Integer page,
                                         Integer pageSize,
                                         Supplier<List<T>> supplier) {
-        return init(clazz,page,pageSize).run(supplier).optimize(false);
+        return init(clazz,page,pageSize).optimize(false).run(supplier);
     }
 
     /**
@@ -107,5 +103,45 @@ public class JlPage<T> {
     protected Long getLimitStart() {
         //（当前页 - 1） * 分页大小 = 起始偏移量
         return ((page - 1) * pageSize);
+    }
+
+    public Long getPage() {
+        return page;
+    }
+
+    public void setPage(Long page) {
+        this.page = page;
+    }
+
+    public Long getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Long pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Long getTotal() {
+        return total;
+    }
+
+    public void setTotal(Long total) {
+        this.total = total;
+    }
+
+    public List<T> getList() {
+        return list;
+    }
+
+    public void setList(List<T> list) {
+        this.list = list;
+    }
+
+    protected Boolean getOptimize() {
+        return optimize;
+    }
+
+    protected void setOptimize(Boolean optimize) {
+        this.optimize = optimize;
     }
 }
